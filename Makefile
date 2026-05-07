@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -I./include -Os -Wall -s
-SRC = src/lexer.c src/parser.c src/main.c
+SRC = src/lexer.c src/parser.c src/main.c src/symtab.c src/optimize.c
 OBJ = $(SRC:.c=.o)
 TARGET = luacomp
 

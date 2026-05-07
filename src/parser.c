@@ -1,26 +1,19 @@
 #include "../include/compiler.h"
 
-// Note: line_num, current_token, and source are defined in lexer.c
-// and declared as extern in compiler.h
-
 void match(TokenType expected) {
-    if (current_token.type == expected) {
-        advance();
-    } else {
-        error("Unexpected token");
-    }
+    if (current_token.type == expected) advance();
+    else error("Unexpected token");
 }
 
-double expression(); // Forward declaration
+double expression();
 
 double factor() {
     double val = 0;
-    if (current_token.type == TK_INT || current_token.type == TK_FLOAT) {
+    if (current_token.type == TK_FLOAT) {
         val = current_token.value;
         advance();
     } else if (current_token.type == TK_ID) {
-        // For benchmarks, we consume the ID
-        advance();
+        advance(); 
     } else if (current_token.type == TK_LPAREN) {
         advance();
         val = expression();
@@ -53,7 +46,6 @@ double expression() {
     return left;
 }
 
-// THIS IS THE FUNCTION THE LINKER WAS MISSING
 void statement() {
     if (current_token.type == TK_ID) {
         char name[32];
@@ -68,20 +60,17 @@ void statement() {
         printf("OUT %.2f\n", val);
     } else if (current_token.type == TK_IF) {
         advance();
-        expression(); // Condition
+        expression(); 
         match(TK_THEN);
-        while(current_token.type != TK_END && current_token.type != TK_EOF) {
-            statement();
-        }
+        while (current_token.type != TK_END && current_token.type != TK_EOF) statement();
         match(TK_END);
     } else {
-        // If we don't recognize the start of a statement, skip it
         advance();
     }
 }
 
 void parse() {
-    advance(); // Initialize first token
+    advance();
     while (current_token.type != TK_EOF && current_token.type != TK_ERROR) {
         statement();
     }

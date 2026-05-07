@@ -1,7 +1,6 @@
 #ifndef COMPILER_H
 #define COMPILER_H
 
-#define _POSIX_C_SOURCE 199309L // Required for CLOCK_MONOTONIC on some systems
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,7 +8,7 @@
 #include <time.h>
 #include <stdbool.h>
 
-// Token Types
+// Token Definitions
 typedef enum {
     TK_IF, TK_ELSE, TK_WHILE, TK_END, TK_THEN, TK_PRINT,
     TK_ID, TK_INT, TK_FLOAT, 
@@ -24,11 +23,12 @@ typedef struct {
     int line;
 } Token;
 
-// Use 'extern' so these can be seen across ALL .c files
+// Global State (Declared as extern to be shared)
 extern Token current_token;
 extern FILE *source;
 extern int line_num;
 
+// Function Prototypes
 void advance();
 void parse();
 void statement();
